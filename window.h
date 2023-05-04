@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 19:53:02 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/05/03 23:35:31 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:04:17 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ typedef struct s_square
 t_win	new_program(int w, int h, char *str);
 t_img	new_image(int w, int h, t_win window);
 int		read_keys(int key_pressed, void *param);
+int 	read_mouse(int button, int mouse_x, int mouse_y, void *param);
 
 #endif
