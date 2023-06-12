@@ -5,24 +5,25 @@
 #                                                     +:+ +:+         +:+      #
 #    By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/03 18:27:40 by hlaadiou          #+#    #+#              #
-#    Updated: 2023/05/03 20:09:03 by hlaadiou         ###   ########.fr        #
+#    Created: 2023/05/10 22:41:32 by hlaadiou          #+#    #+#              #
+#    Updated: 2023/05/14 01:45:27 by hlaadiou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= mlx_test.c window.c
+SRCS		= fractol.c
 OBJS		= $(SRCS:.c=.o)
 CC			= cc
+CFLAGS		= -Wall -Werror -Wextra -g
 RM			= rm -f
-NAME		= mlx_test
+NAME		= fractol
 
 %.o:		%.c
-			$(CC) -Wall -Werror -Wextra -Imlx -c $< -o $@
+			$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
-all:		$(NAME) clean
+all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			$(CC) $(OBJS) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+			$(CC) $(OBJS) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
 
 clean:
 			$(RM) $(OBJS)
