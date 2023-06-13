@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/11 11:46:09 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/13 21:54:18 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,32 @@
 # define FRACTOL_H
 
 /* Window */
-# define WIN_W 800
-# define WIN_H 600
+# define WIN_W 950
+# define WIN_H 950
 /* Colors */
 # define RED   0xFF0000
 # define GREEN 0xFF00
 # define BLUE  0xFF
 # define PURPLE 0x9F2B68
-# define YELLOW 0xFFBF00
+# define APRICOT 0xF3C065
 # define WHITE 0xFFFFFF
+# define BLACK 0x000000
+# define CREAM 0xF6E8B1
+# define DARK_VANILLA 0xD4CAA3
+# define IVORY 0xFFFEF2
 /* Algo */
-# define MAX_ITER 42
+# define MAX_ITER 50
 
 /* Coordinates */
-# define X_I -2.25
-# define X_F 1
-# define Y_I -1
-# define Y_F 1
+# define X_I -2.0
+# define X_F 1.0
+# define Y_I -1.5
+# define Y_F 1.5
 
 #include <mlx.h>
-#include <X11/keysym.h>
-#include <X11/X.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-typedef struct s_rect
-{
-    int x;
-    int y;
-    int width;
-    int height;
-    int color;   
-}   t_rect;
 
 typedef struct s_img
 {
@@ -64,12 +57,10 @@ typedef struct s_data
 	t_img	img;
 }   t_data;
 
-typedef struct s_coord
+typedef struct s_cmplx
 {
-    double  a;
-    double  b;
-    int     x;
-    int     y;
-}   t_coord;
+	double	re;
+	double	im;
+}	t_cmplx;
 
 #endif
