@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:10:04 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/13 21:53:17 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/15 21:23:57 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ t_cmplx	complex_sum(t_cmplx x, t_cmplx y)
 }
 
 // A function that maps the coordinates of the window in the complex plane.
-t_cmplx	map_coord(int x, int y)
+t_cmplx	map_coord(int x, int y, t_coord coord)
 {
 	t_cmplx	c;
 
-	c.re = X_I + x * ((X_F - X_I) / WIN_W);
-	c.im = Y_I + y * ((Y_F - Y_I) / WIN_H);
+	c.re = coord.x_i + x * ((coord.x_f - coord.x_i) / WIN_W);
+	c.im = coord.y_i + y * ((coord.y_f - coord.y_i) / WIN_H);
 	return (c);
 }
 
@@ -72,6 +72,17 @@ int	mandelbrot(t_cmplx c)
 // 	return (0);
 // }
 
+int	key_hook(int keycode, t_data *data)
+{
+	if (keycode == ESCAPE)
+	{
+		mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		exit(EXIT_SUCCESS);
+	}
+	return (0);
+}
+
 void	put_pixel_img(t_img *img, int x, int y, int color)
 {
 	char	*pixel;
@@ -99,7 +110,7 @@ void	render_background(t_img *img, int color)
 }
 
 // Depending on the calculations plots a colored pixel in the window.
-void	render_mandelbrot(t_img *img)
+void	render_mandelbrot(t_img *img, t_coord coord)
 {
 	int	iterations;
 	int	i;
@@ -111,8 +122,8 @@ void	render_mandelbrot(t_img *img)
 		i = 0;
 		while(i < WIN_W)
 		{
-			iterations = mandelbrot(map_coord(i, j));
-			put_pixel_img(img, i, j, WHITE - (iterations * WHITE / MAX_ITER));
+			iterations = mandelbrot(map_coord(i, j, coord));
+			put_pixel_img(img, i, j, BLUE - (iterations * BLUE / MAX_ITER));
 			// if (iterations == MAX_ITER)
 			// 	put_pixel_img(img, i, j, WHITE);
 			// else
@@ -123,12 +134,51 @@ void	render_mandelbrot(t_img *img)
 	}
 }
 
+void	zoom_in(int x, int y, t_data *data)
+{
+	(void)x;
+	(void)y;
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+	(data->coord.x_i) += 0.2;
+	(data->coord.x_f) -= 0.2;
+	(data->coord.y_i) += 0.1;
+	(data->coord.y_f) -= 0.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+void	zoom_out(int x, int y, t_data *data)
+{
+	(void)x;
+	(void)y;
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+	(data->coord.x_i) -= 0.2;
+	(data->coord.x_f) += 0.2;
+	(data->coord.y_i) -= 0.1;
+	(data->coord.y_f) += 0.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+int	mouse_hook(int button, int x, int y, t_data *data)
+{
+	if (button == SCROLL_UP)
+		zoom_in(x, y, data);
+	else if (button == SCROLL_DOWN)
+		zoom_out(x, y, data);
+	return (0);
+}
+
 int	render(t_data *data)
 {
 	if (data->win_ptr == NULL)
 		return (1);
- 	render_background(&data->img, IVORY);
-	render_mandelbrot(&data->img);
+	data->coord = (t_coord){X_I, X_F, Y_I, Y_F};
+	render_mandelbrot(&data->img, data->coord);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return (0);
 }
@@ -149,10 +199,9 @@ int main(void)
 	data.img.mlx_img = mlx_new_image(data.mlx_ptr, WIN_W, WIN_H);
 	data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp, &data.img.line_len, &data.img.endian);
 	//SETUP HOOKS
-	// mlx_loop_hook(data.mlx_ptr, &render, &data);
-	// mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 	render(&data);
+	mlx_key_hook(data.win_ptr, key_hook, &data);
+	mlx_mouse_hook(data.win_ptr, mouse_hook, &data);
 	mlx_loop(data.mlx_ptr);
-	// mlx_destroy_display(data.mlx_ptr);
 	free(data.mlx_ptr);
 }

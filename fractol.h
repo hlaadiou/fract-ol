@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/13 21:54:18 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:29:44 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@
 # define IVORY 0xFFFEF2
 /* Algo */
 # define MAX_ITER 50
-
+/* KeyCodes */
+# define ESCAPE 53
+# define SCROLL_UP 4
+# define SCROLL_DOWN 5
 /* Coordinates */
 # define X_I -2.0
 # define X_F 1.0
@@ -40,6 +43,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+typedef struct s_coord
+{
+	double	x_i;
+	double	x_f;
+	double	y_i;
+	double	y_f;
+}	t_coord;
 
 typedef struct s_img
 {
@@ -55,6 +66,7 @@ typedef struct s_data
     void    *mlx_ptr;
     void    *win_ptr;
 	t_img	img;
+	t_coord	coord;
 }   t_data;
 
 typedef struct s_cmplx
