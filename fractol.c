@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:10:04 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/15 21:23:57 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:51:13 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,6 @@ int	mandelbrot(t_cmplx c)
 		iterations++;
 	}
 	return (iterations);
-}
-
-// int handle_keypress(int keysym, t_data *data)
-// {
-// 	if (keysym == XK_Escape)
-// 	{
-// 		mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-// 	    mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-// 		data->win_ptr = NULL;
-// 	}
-// 	return (0);
-// }
-
-int	key_hook(int keycode, t_data *data)
-{
-	if (keycode == ESCAPE)
-	{
-		mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		exit(EXIT_SUCCESS);
-	}
-	return (0);
 }
 
 void	put_pixel_img(t_img *img, int x, int y, int color)
@@ -141,10 +119,11 @@ void	zoom_in(int x, int y, t_data *data)
 	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
 	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
 	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) += 0.2;
-	(data->coord.x_f) -= 0.2;
-	(data->coord.y_i) += 0.1;
-	(data->coord.y_f) -= 0.1;
+	(data->coord.x_i) /= 1.05;
+	(data->coord.x_f) /= 1.05;
+	(data->coord.y_i) /= 1.05;
+	(data->coord.y_f) /= 1.05;
+	printf("%f  %f  %f  %f\n", data->coord.x_i, data->coord.x_f, data->coord.y_i, data->coord.y_f);
 	render_mandelbrot(&data->img, data->coord);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 }
@@ -156,9 +135,53 @@ void	zoom_out(int x, int y, t_data *data)
 	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
 	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
 	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) -= 0.2;
-	(data->coord.x_f) += 0.2;
+	(data->coord.x_i) *= 1.1;
+	(data->coord.x_f) *= 1.1;
+	(data->coord.y_i) *= 1.1;
+	(data->coord.y_f) *= 1.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+void	move_left(t_data *data)
+{
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+	(data->coord.x_i) -= 0.1;
+	(data->coord.x_f) -= 0.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+void	move_right(t_data *data)
+{
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+	(data->coord.x_i) += 0.1;
+	(data->coord.x_f) += 0.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+void	move_up(t_data *data)
+{
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
 	(data->coord.y_i) -= 0.1;
+	(data->coord.y_f) -= 0.1;
+	render_mandelbrot(&data->img, data->coord);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
+}
+
+void	move_down(t_data *data)
+{
+	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
+	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+	(data->coord.y_i) += 0.1;
 	(data->coord.y_f) += 0.1;
 	render_mandelbrot(&data->img, data->coord);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
@@ -170,6 +193,25 @@ int	mouse_hook(int button, int x, int y, t_data *data)
 		zoom_in(x, y, data);
 	else if (button == SCROLL_DOWN)
 		zoom_out(x, y, data);
+	return (0);
+}
+
+int	key_hook(int keycode, t_data *data)
+{
+	if (keycode == ESCAPE)
+	{
+		mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		exit(EXIT_SUCCESS);
+	}
+	else if (keycode == ARROW_LEFT)
+		move_left(data);
+	else if (keycode == ARROW_RIGHT)
+		move_right(data);
+	else if (keycode == ARROW_UP)
+		move_up(data);
+	else if (keycode == ARROW_DOWN)
+		move_down(data);
 	return (0);
 }
 

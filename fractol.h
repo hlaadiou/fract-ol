@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/15 20:29:44 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:38:58 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define FRACTOL_H
 
 /* Window */
-# define WIN_W 950
-# define WIN_H 950
+# define WIN_W 750
+# define WIN_H 750
+/* Algo */
+# define MAX_ITER 25
 /* Colors */
 # define RED   0xFF0000
 # define GREEN 0xFF00
@@ -27,18 +29,20 @@
 # define CREAM 0xF6E8B1
 # define DARK_VANILLA 0xD4CAA3
 # define IVORY 0xFFFEF2
-/* Algo */
-# define MAX_ITER 50
 /* KeyCodes */
 # define ESCAPE 53
 # define SCROLL_UP 4
 # define SCROLL_DOWN 5
+# define ARROW_LEFT 123
+# define ARROW_RIGHT 124
+# define ARROW_UP 126
+# define ARROW_DOWN 125
 /* Coordinates */
 # define X_I -2.0
 # define X_F 1.0
 # define Y_I -1.5
 # define Y_F 1.5
-
+/* Includes */
 #include <mlx.h>
 #include <stdio.h>
 #include <stdlib.h>
