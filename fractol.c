@@ -6,185 +6,21 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:10:04 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/16 20:51:13 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:45:07 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-double	modulus(t_cmplx c)
-{
-	return (sqrt(pow(c.re, 2) + pow(c.im, 2)));
-}
-
-t_cmplx	complex_square(t_cmplx z)
-{
-	t_cmplx	square;
-
-	square.re = pow(z.re, 2) - pow(z.im, 2);
-	square.im = 2 * z.re * z.im;
-	return (square);
-}
-
-t_cmplx	complex_sum(t_cmplx x, t_cmplx y)
-{
-	t_cmplx	sum;
-
-	sum.re = x.re + y.re;
-	sum.im = x.im + y.im;
-	return (sum);
-}
-
-// A function that maps the coordinates of the window in the complex plane.
-t_cmplx	map_coord(int x, int y, t_coord coord)
-{
-	t_cmplx	c;
-
-	c.re = coord.x_i + x * ((coord.x_f - coord.x_i) / WIN_W);
-	c.im = coord.y_i + y * ((coord.y_f - coord.y_i) / WIN_H);
-	return (c);
-}
-
-// Takes the coordinates of a mapped pixel and decides if it is in the M set.
-int	mandelbrot(t_cmplx c)
-{
-	t_cmplx	z;
-	int		iterations;
-
-	z = c;
-	iterations = 0;
-	while (iterations < MAX_ITER && modulus(z) <= 2.0)
-	{
-		z = complex_sum(complex_square(z), c);
-		iterations++;
-	}
-	return (iterations);
-}
-
 void	put_pixel_img(t_img *img, int x, int y, int color)
 {
 	char	*pixel;
 	
-	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(int *)pixel = color;
-}
-
-void	render_background(t_img *img, int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < WIN_H)
+	if (x >= 0 && x < WIN_W && y >= 0 && y < WIN_H)
 	{
-		j = 0;
-		while (j < WIN_W)
-		{
-			put_pixel_img(img, j++, i, color);
-		}
-		++i;
+		pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+		*(int *)pixel = color;
 	}
-	return ;
-}
-
-// Depending on the calculations plots a colored pixel in the window.
-void	render_mandelbrot(t_img *img, t_coord coord)
-{
-	int	iterations;
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < WIN_H)
-	{
-		i = 0;
-		while(i < WIN_W)
-		{
-			iterations = mandelbrot(map_coord(i, j, coord));
-			put_pixel_img(img, i, j, BLUE - (iterations * BLUE / MAX_ITER));
-			// if (iterations == MAX_ITER)
-			// 	put_pixel_img(img, i, j, WHITE);
-			// else
-			// 	put_pixel_img(img, i, j, WHITE * iterations * 8);
-			i++;
-		}
-		j++;
-	}
-}
-
-void	zoom_in(int x, int y, t_data *data)
-{
-	(void)x;
-	(void)y;
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) /= 1.05;
-	(data->coord.x_f) /= 1.05;
-	(data->coord.y_i) /= 1.05;
-	(data->coord.y_f) /= 1.05;
-	printf("%f  %f  %f  %f\n", data->coord.x_i, data->coord.x_f, data->coord.y_i, data->coord.y_f);
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
-}
-
-void	zoom_out(int x, int y, t_data *data)
-{
-	(void)x;
-	(void)y;
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) *= 1.1;
-	(data->coord.x_f) *= 1.1;
-	(data->coord.y_i) *= 1.1;
-	(data->coord.y_f) *= 1.1;
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
-}
-
-void	move_left(t_data *data)
-{
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) -= 0.1;
-	(data->coord.x_f) -= 0.1;
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
-}
-
-void	move_right(t_data *data)
-{
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.x_i) += 0.1;
-	(data->coord.x_f) += 0.1;
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
-}
-
-void	move_up(t_data *data)
-{
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.y_i) -= 0.1;
-	(data->coord.y_f) -= 0.1;
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
-}
-
-void	move_down(t_data *data)
-{
-	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
-	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
-	(data->coord.y_i) += 0.1;
-	(data->coord.y_f) += 0.1;
-	render_mandelbrot(&data->img, data->coord);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 }
 
 int	mouse_hook(int button, int x, int y, t_data *data)
@@ -212,23 +48,121 @@ int	key_hook(int keycode, t_data *data)
 		move_up(data);
 	else if (keycode == ARROW_DOWN)
 		move_down(data);
+	else if (keycode == H_KEY)
+		restore_window(data);
 	return (0);
 }
 
-int	render(t_data *data)
+int	render(t_data *data, char **args)
 {
 	if (data->win_ptr == NULL)
 		return (1);
-	data->coord = (t_coord){X_I, X_F, Y_I, Y_F};
-	render_mandelbrot(&data->img, data->coord);
+	data->coord = (t_coord){MX_I, MX_F, MY_I, MY_F};
+	data->cst = (t_cmplx){ft_atod(args[1]), ft_atod(args[2])};
+	render_juliaset(&data->img, data->coord, data->cst);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 	return (0);
 }
 
-int main(void)
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if ((unsigned char)s1[i] == (unsigned char)s2[i])
+			i++;
+		else
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+char	*ft_tolower(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+		i++;
+	}
+	return (str);
+}
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	skip_spaces(char *str, int *i, int *j)
+{
+	while (str[*i] && (str[*i] == 32 || (str[*i] >= 9 && str[*i] <= 13)))
+	{
+		(*i)++;
+		(*j)++;
+	}
+	return ;
+}
+
+int	ft_valid_double(char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	skip_spaces(str, &i, &j);
+	if ((str[i] == '-' || str[i] == '+') && str[i + 1])
+	{
+		i++;
+		j++;
+	}
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+		i++;
+	if (str[i] == '.' && i != j && str[i + 1])
+		i++;
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+		i++;
+	skip_spaces(str, &i, &j);
+	if (i == ft_strlen(str) && i != j)
+		return (1);
+	return (0);
+}
+
+int	check_arguments(int ac, char **args)
+{
+	if (ac == 2)
+	{
+		if (!ft_strcmp(ft_tolower(args[1]), "mandelbrot"))
+			return (1);
+		else if (!ft_strcmp(ft_tolower(args[1]), "burningship"))
+			return (3);
+	}
+	else if (ac == 4)
+	{
+		if (!ft_strcmp(ft_tolower(args[1]), "julia") && ft_valid_double(args[2]) \
+			&& ft_valid_double(args[3]))
+			return (2);
+	}
+	else
+		print_options();
+	return (-1);
+}
+
+int main(int ac, char **av)
 {
 	t_data	data;
 	
+	(void)ac;
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 	    return (1);
@@ -240,8 +174,7 @@ int main(void)
 	}
 	data.img.mlx_img = mlx_new_image(data.mlx_ptr, WIN_W, WIN_H);
 	data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp, &data.img.line_len, &data.img.endian);
-	//SETUP HOOKS
-	render(&data);
+	render(&data, &av[1]);
 	mlx_key_hook(data.win_ptr, key_hook, &data);
 	mlx_mouse_hook(data.win_ptr, mouse_hook, &data);
 	mlx_loop(data.mlx_ptr);
