@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/26 15:45:20 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:04:16 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@
 # define BSY_F         0.026824
 
 /* Includes */
-#include <mlx.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <math.h>
+# include <mlx.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <math.h>
 
 /* Typedefs */
 typedef struct s_coord
@@ -86,9 +86,9 @@ typedef struct s_coord
 
 typedef struct s_img
 {
-    void    *mlx_img;
-    char    *addr;
-    int		bpp;
+	char	*addr;
+	int		bpp;
+	void	*mlx_img;
 	int		line_len;
 	int		endian;
 }	t_img;
@@ -101,13 +101,13 @@ typedef struct s_cmplx
 
 typedef struct s_data
 {
-    void    *mlx_ptr;
-    void    *win_ptr;
+	void	*mlx_ptr;
+	void	*win_ptr;
 	int		fractal;
 	t_img	img;
 	t_coord	coord;
 	t_cmplx	cst;
-}   t_data;
+}	t_data;
 
 typedef struct s_var
 {
@@ -119,7 +119,7 @@ typedef struct s_var
 	double	j;
 }	t_var;
 
-typedef struct	s_double
+typedef struct s_double
 {
 	double	whole;
 	double	decimal;

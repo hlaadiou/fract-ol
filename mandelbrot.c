@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:37:13 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/24 15:05:37 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:57:30 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	render_mandelbrot(t_img *img, t_coord coord)
 	{
 		x = 0;
 		m_vars.i = coord.x_i;
-		while(m_vars.i < coord.x_f)
+		while (m_vars.i < coord.x_f)
 		{
 			iterations = mandelbrot((t_cmplx){m_vars.i, m_vars.j});
 			put_pixel_img(img, x++, y, iterations * (255 / MAX_ITER));

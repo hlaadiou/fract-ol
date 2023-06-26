@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:24:07 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/24 15:24:43 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:57:54 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ t_cmplx	complex_square(t_cmplx z)
 {
 	t_cmplx	square;
 
-	// z.re = fabs(z.re);
-	// z.im = fabs(z.im);
 	square.re = (z.re * z.re) - (z.im * z.im);
 	square.im = 2 * z.re * z.im;
 	return (square);

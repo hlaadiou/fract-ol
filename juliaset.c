@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:38:11 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/24 16:05:51 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:57:05 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	render_juliaset(t_img *img, t_coord coord, t_cmplx cst)
 	{
 		x = 0;
 		m_vars.i = coord.x_i;
-		while(m_vars.i < coord.x_f)
+		while (m_vars.i < coord.x_f)
 		{
 			iterations = julia((t_cmplx){m_vars.i, m_vars.j}, cst);
 			put_pixel_img(img, x++, y, iterations * (255 / MAX_ITER));

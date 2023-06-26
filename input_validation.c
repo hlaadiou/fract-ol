@@ -6,30 +6,30 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:39:46 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/26 15:40:40 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:56:19 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void print_options(void)
+void	print_options(void)
 {
-    ft_putstr("╔═════════════════════════════════════════════════════════╗");
-    ft_putstr("║                      FRACT-OL OPTIONS                   ║");
-    ft_putstr("╠═════════════════════════════════════════════════════════╣");
-    ft_putstr("║                                                         ║");
-    ft_putstr("║  Welcome to FRACT-OL! Choose one of the options below:  ║");
-    ft_putstr("║                                                         ║");
-    ft_putstr("║ 1. Render the Mandelbrot set:                           ║");
-    ft_putstr("║      ./fractol mandelbrot                               ║");
-    ft_putstr("║                                                         ║");
-    ft_putstr("║ 2. Render the Julia set:                                ║");
-    ft_putstr("║      ./julia real_part imaginary_part                   ║");
-    ft_putstr("║                                                         ║");
-    ft_putstr("║ 3. Render the Burning Ship fractal:                     ║");
-    ft_putstr("║      ./fractol burningship                              ║");
-    ft_putstr("║                                                         ║");
-    ft_putstr("╚═════════════════════════════════════════════════════════╝");
+	ft_putstr("╔═════════════════════════════════════════════════════════╗");
+	ft_putstr("║                      FRACT-OL OPTIONS                   ║");
+	ft_putstr("╠═════════════════════════════════════════════════════════╣");
+	ft_putstr("║                                                         ║");
+	ft_putstr("║  Welcome to FRACT-OL! Choose one of the options below:  ║");
+	ft_putstr("║                                                         ║");
+	ft_putstr("║ 1. Render the Mandelbrot set:                           ║");
+	ft_putstr("║      ./fractol mandelbrot                               ║");
+	ft_putstr("║                                                         ║");
+	ft_putstr("║ 2. Render the Julia set:                                ║");
+	ft_putstr("║      ./julia real_part imaginary_part                   ║");
+	ft_putstr("║                                                         ║");
+	ft_putstr("║ 3. Render the Burning Ship fractal:                     ║");
+	ft_putstr("║      ./fractol burningship                              ║");
+	ft_putstr("║                                                         ║");
+	ft_putstr("╚═════════════════════════════════════════════════════════╝");
 	exit(EXIT_FAILURE);
 }
 
@@ -85,8 +85,8 @@ int	check_arguments(t_data *data, int ac, char **args)
 	}
 	else if (ac == 4)
 	{
-		if (!ft_strcmp(ft_tolower(args[1]), "julia") && ft_valid_double(args[2]) \
-			&& ft_valid_double(args[3]))
+		if (!ft_strcmp(ft_tolower(args[1]), "julia") && \
+			ft_valid_double(args[2]) && ft_valid_double(args[3]))
 		{
 			data->coord = (t_coord){JX_I, JX_F, JY_I, JY_F};
 			data->cst = (t_cmplx){ft_atod(args[2]), ft_atod(args[3])};
