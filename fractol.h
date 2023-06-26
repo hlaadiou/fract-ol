@@ -6,7 +6,7 @@
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/24 16:07:48 by hlaadiou         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:45:20 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,16 @@
 # define WIN_W        800
 # define WIN_H        750
 
+/* Fractals */
+# define MANDELBROT   1
+# define JULIA        2
+# define BURNINGSHIP  3
+
 /* Algo */
 # define EPSILON      0.00000000001
 # define MAX_ITER     100
 # define ZOOM_FACTOR  1.5
+# define TR_UNIT      10
 
 /* Colors */
 # define RED          0xFF0000
@@ -35,14 +41,15 @@
 # define IVORY        0xFFFEF2
 
 /* KeyCodes */
-# define ESCAPE       53
-# define SCROLL_UP    4
-# define SCROLL_DOWN  5
-# define ARROW_LEFT   123
-# define ARROW_RIGHT  124
-# define ARROW_UP     126
-# define ARROW_DOWN   125
-# define H_KEY 4
+# define ESCAPE         53
+# define SCROLL_UP      4
+# define SCROLL_DOWN    5
+# define MIDDLE_CLICK   3
+# define ARROW_LEFT     123
+# define ARROW_RIGHT    124
+# define ARROW_UP       126
+# define ARROW_DOWN     125
+# define DESTROY_NOTIFY 17
 
 /* Coordinates */
 // MANDELBROT
@@ -55,11 +62,17 @@
 # define JX_F         1.6
 # define JY_I         -1.2
 # define JY_F         1.2
+// TheBurningShip
+# define BSX_I         -1.818606
+# define BSX_F         -1.701551
+# define BSY_I         -0.090231
+# define BSY_F         0.026824
 
 /* Includes */
 #include <mlx.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <math.h>
 
 /* Typedefs */
@@ -90,6 +103,7 @@ typedef struct s_data
 {
     void    *mlx_ptr;
     void    *win_ptr;
+	int		fractal;
 	t_img	img;
 	t_coord	coord;
 	t_cmplx	cst;
@@ -128,10 +142,21 @@ void		move_up(t_data *data);
 void		move_down(t_data *data);
 int			mouse_hook(int button, int x, int y, t_data *data);
 int			key_hook(int keycode, t_data *data);
-int			render(t_data *data, char **args);
+int			quit(t_data *data);
+void		render_fractal(t_data *data);
 int			mandelbrot(t_cmplx c);
 void		render_mandelbrot(t_img *img, t_coord coord);
 int			julia(t_cmplx z, t_cmplx c);
 void		render_juliaset(t_img *img, t_coord coord, t_cmplx cst);
+void		print_options(void);
+void		skip_spaces(char *str, int *i, int *j);
+int			ft_valid_double(char *str);
+int			check_arguments(t_data *data, int ac, char **args);
+int			burningship(t_cmplx c);
+void		render_burningship(t_img *img, t_coord coord);
+void		ft_putstr(char *s);
+int			ft_strcmp(const char *s1, const char *s2);
+char		*ft_tolower(char *str);
+int			ft_strlen(char *str);
 
 #endif
