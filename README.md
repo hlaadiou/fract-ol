@@ -28,10 +28,10 @@ Example:
 
 Once the fractal is rendered, you can interact with it using the following controls:
 
-**Arrow Keys**: Move around the fractal (navigate up, down, left, right).
-**Enter**: Change the color scheme.
-**Page Up / Page Down**: Increase or decrease the number of iterations to render more or less detail in real time.
-**Scroll Wheel**: Zoom in and out of the fractal.
+- **Arrow Keys**: Move around the fractal (navigate up, down, left, right).
+- **Enter**: Change the color scheme.
+- **Page Up / Page Down**: Increase or decrease the number of iterations to render more or less detail in real time.
+- **Scroll Wheel**: Zoom in and out of the fractal.
 
 ## Dependencies
 
