@@ -35,5 +35,5 @@ Once the fractal is rendered, you can interact with it using the following contr
 
 ## Dependencies
 
-**MinilibX**: A lightweight graphics library used for rendering.
-**Make**: Required for compiling the project.
+- **MinilibX**: A lightweight graphics library used for rendering.
+- **Make**: Required for compiling the project.
