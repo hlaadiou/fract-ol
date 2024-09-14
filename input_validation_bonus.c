@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_validation.c                                 :+:      :+:    :+:   */
+/*   input_validation_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 15:39:46 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/27 20:10:19 by hlaadiou         ###   ########.fr       */
+/*   Created: 2023/06/27 18:14:38 by hlaadiou          #+#    #+#             */
+/*   Updated: 2023/06/27 20:17:51 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 void	print_options(void)
 {
@@ -25,6 +25,9 @@ void	print_options(void)
 	ft_putstr("║                                                         ║");
 	ft_putstr("║ 2. Render the Julia set:                                ║");
 	ft_putstr("║      ./fractol julia real_part imaginary_part           ║");
+	ft_putstr("║                                                         ║");
+	ft_putstr("║ 3. Render the Burning Ship fractal:                     ║");
+	ft_putstr("║      ./fractol burningship                              ║");
 	ft_putstr("║                                                         ║");
 	ft_putstr("╚═════════════════════════════════════════════════════════╝");
 	exit(EXIT_FAILURE);
@@ -73,6 +76,11 @@ int	check_arguments(t_data *data, int ac, char **args)
 		{
 			data->coord = (t_coord){MX_I, MX_F, MY_I, MY_F};
 			return (1);
+		}
+		else if (!ft_strcmp(ft_tolower(args[1]), "burningship"))
+		{
+			data->coord = (t_coord){BSX_I, BSX_F, BSY_I, BSY_F};
+			return (3);
 		}
 	}
 	else if (ac == 4)

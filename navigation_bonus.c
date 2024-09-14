@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   navigation.c                                       :+:      :+:    :+:   */
+/*   navigation_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 15:20:32 by hlaadiou          #+#    #+#             */
-/*   Updated: 2024/03/23 20:21:36 by hlaadiou         ###   ########.fr       */
+/*   Created: 2023/06/27 18:15:39 by hlaadiou          #+#    #+#             */
+/*   Updated: 2023/06/27 18:21:05 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 void	restore_window(t_data *data)
 {
@@ -19,6 +19,8 @@ void	restore_window(t_data *data)
 		data->coord = (t_coord){MX_I, MX_F, MY_I, MY_F};
 	else if (data->fractal == JULIA)
 		data->coord = (t_coord){JX_I, JX_F, JY_I, JY_F};
+	else if (data->fractal == BURNINGSHIP)
+		data->coord = (t_coord){BSX_I, BSX_F, BSY_I, BSY_F};
 	mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
 	data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIN_W, WIN_H);
 	data->img.addr = mlx_get_data_addr \

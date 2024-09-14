@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.c                                          :+:      :+:    :+:   */
+/*   fractol_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/10 23:10:04 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/27 21:20:35 by hlaadiou         ###   ########.fr       */
+/*   Created: 2023/06/27 18:13:54 by hlaadiou          #+#    #+#             */
+/*   Updated: 2023/06/27 21:20:46 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 void	put_pixel_img(t_img *img, int x, int y, int color)
 {
@@ -29,6 +29,8 @@ void	render_fractal(t_data *data)
 		render_mandelbrot(data);
 	else if (data->fractal == JULIA)
 		render_juliaset(data);
+	else if (data->fractal == BURNINGSHIP)
+		render_burningship(data);
 	mlx_put_image_to_window \
 		(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 }

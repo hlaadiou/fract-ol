@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   juliaset.c                                         :+:      :+:    :+:   */
+/*   mandelbrot_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 05:38:11 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/27 16:53:14 by hlaadiou         ###   ########.fr       */
+/*   Created: 2023/06/27 18:15:18 by hlaadiou          #+#    #+#             */
+/*   Updated: 2023/06/27 18:21:42 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
-int	julia(t_cmplx z, t_data data)
+int	mandelbrot(t_cmplx c, t_data data)
 {
 	int		iterations;
+	t_cmplx	z;
 
+	z = c;
 	iterations = 0;
 	while (iterations < data.max_iter && squared_modulus(z) <= 4.0)
 	{
-		z = complex_sum(complex_square(z), data.cst);
+		z = complex_sum(complex_square(z), c);
 		iterations++;
 	}
 	return (iterations);
 }
 
-void	render_juliaset(t_data *data)
+void	render_mandelbrot(t_data *data)
 {
 	t_var	m_vars;
 	int		iterations;
@@ -42,7 +44,7 @@ void	render_juliaset(t_data *data)
 		m_vars.i = data->coord.x_i;
 		while (m_vars.i < data->coord.x_f)
 		{
-			iterations = julia((t_cmplx){m_vars.i, m_vars.j}, *data);
+			iterations = mandelbrot((t_cmplx){m_vars.i, m_vars.j}, *data);
 			if (iterations == data->max_iter)
 				put_pixel_img(&data->img, x++, y, BLACK);
 			else

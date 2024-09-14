@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   fractol_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlaadiou <hlaadiou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/10 23:06:22 by hlaadiou          #+#    #+#             */
-/*   Updated: 2023/06/27 20:27:39 by hlaadiou         ###   ########.fr       */
+/*   Created: 2023/06/27 18:14:09 by hlaadiou          #+#    #+#             */
+/*   Updated: 2023/06/27 20:28:39 by hlaadiou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef FRACTOL_BONUS_H
+# define FRACTOL_BONUS_H
 
 /* Window */
 # define WIN_W        800
@@ -20,6 +20,7 @@
 /* Fractals */
 # define MANDELBROT   1
 # define JULIA        2
+# define BURNINGSHIP  3
 
 /* Algo */
 # define MAX_ITER     100
@@ -60,6 +61,11 @@
 # define JX_F         1.6
 # define JY_I         -1.2
 # define JY_F         1.2
+// TheBurningShip
+# define BSX_I         -1.818606
+# define BSX_F         -1.701551
+# define BSY_I         -0.090231
+# define BSY_F         0.026824
 
 /* Includes */
 # include <mlx.h>
@@ -146,6 +152,8 @@ void		print_options(void);
 void		skip_spaces(char *str, int *i, int *j);
 int			ft_valid_double(char *str);
 int			check_arguments(t_data *data, int ac, char **args);
+int			burningship(t_cmplx c, t_data data);
+void		render_burningship(t_data *data);
 void		ft_putstr(char *s);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_tolower(char *str);
